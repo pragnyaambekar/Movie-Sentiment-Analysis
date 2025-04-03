@@ -1,0 +1,290 @@
+/* Custom Color Scheme for Movie Sentiment Analyzer */
+:root {
+    --primary-color: #211C84;      /* Dark Blue */
+    --secondary-color: #4D55CC;    /* Medium Blue */
+    --tertiary-color: #7A73D1;     /* Light Purple */
+    --light-color: #B5A8D5;        /* Lavender */
+    --dark-color: #1A1866;         /* Darker Blue */
+    --positive-color: #73d187;     /* Light Purple for Positive */
+    --negative-color: #FF6B6B;     /* Soft Red for Negative */
+    --neutral-color: #B5A8D5;      /* Lavender for Neutral */
+    --text-dark: #333333;          /* Dark Gray for Text */
+    --text-light: #FFFFFF;         /* White for Text on Dark Backgrounds */
+    --background-color: #F8F7FF;   /* Very Light Lavender Background */
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 56px;
+    color: var(--text-dark);
+}
+
+.navbar {
+    background-color: var(--primary-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: var(--text-light) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: var(--text-light);
+}
+
+.hero {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    padding: 80px 0;
+    color: var(--text-light);
+    margin-bottom: 30px;
+    border-radius: 0 0 20px 20px;
+}
+
+.hero h1 {
+    font-weight: 700;
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    border: none;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    background-color: var(--secondary-color);
+    color: var(--text-light);
+    border-radius: 15px 15px 0 0 !important;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: var(--tertiary-color);
+    border-color: var(--tertiary-color);
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--text-light);
+}
+
+.result-box {
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    display: none;
+}
+
+.positive {
+    background-color: rgba(122, 115, 209, 0.1);
+    border-left: 5px solid var(--positive-color);
+}
+
+.negative {
+    background-color: rgba(255, 107, 107, 0.1);
+    border-left: 5px solid var(--negative-color);
+}
+
+.neutral {
+    background-color: rgba(181, 168, 213, 0.1);
+    border-left: 5px solid var(--neutral-color);
+}
+
+.result-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.positive-icon {
+    color: var(--positive-color);
+}
+
+.negative-icon {
+    color: var(--negative-color);
+}
+
+.neutral-icon {
+    color: var(--neutral-color);
+}
+
+.confidence {
+    height: 8px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.tag {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: var(--light-color);
+    color: var(--text-dark);
+    border-radius: 20px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+#dashboard {
+    display: none;
+}
+
+.sentiment-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sentiment-positive {
+    background-color: rgba(122, 115, 209, 0.2);
+    color: var(--primary-color);
+}
+
+.sentiment-negative {
+    background-color: rgba(255, 107, 107, 0.2);
+    color: #C42B2B;
+}
+
+.stat-card {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    height: 100%;
+    background-color: white;
+}
+
+.stat-card i {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+.stat-card i.text-success {
+    color: var(--positive-color) !important;
+}
+
+.stat-card i.text-danger {
+    color: var(--negative-color) !important;
+}
+
+.stat-card i.text-primary {
+    color: var(--secondary-color) !important;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 0;
+    color: var(--text-dark);
+}
+
+.stat-label {
+    font-size: 16px;
+    color: #777;
+    margin-top: 5px;
+}
+
+.feature-highlight {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.feature-icon {
+    font-size: 40px;
+    color: var(--tertiary-color);
+    margin-bottom: 20px;
+}
+
+footer {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 30px 0;
+}
+
+.footer a {
+    color: var(--text-light);
+    opacity: 0.9;
+}
+
+.footer a:hover {
+    opacity: 1;
+}
+
+.review-history {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.history-review {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: rgba(181, 168, 213, 0.1);
+    border: 1px solid rgba(122, 115, 209, 0.2);
+}
+
+.loader {
+    display: none;
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid var(--secondary-color);
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.progress-bar.bg-success {
+    background-color: var(--positive-color) !important;
+}
+
+.progress-bar.bg-danger {
+    background-color: var(--negative-color) !important;
+}
+
+.form-control:focus {
+    border-color: var(--tertiary-color);
+    box-shadow: 0 0 0 0.25rem rgba(122, 115, 209, 0.25);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero {
+        padding: 50px 0;
+    }
+    
+    .hero h1 {
+        font-size: 36px;
+    }
+}

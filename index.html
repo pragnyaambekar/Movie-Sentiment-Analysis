@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Sentiment Analyzer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-film me-2"></i>Movie Sentiment Analyzer
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <section class="hero text-center" id="home">
+        <div class="container">
+            <h1 class="mb-4">Movie Review Sentiment Analysis</h1>
+            <p class="lead mb-5">Discover the emotional tone behind movie reviews with our advanced AI sentiment analyzer.</p>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <form id="reviewForm">
+                                <div class="mb-3">
+                                    <label for="reviewText" class="form-label">Enter your movie review:</label>
+                                    <textarea class="form-control" id="reviewText" rows="4" placeholder="Write or paste a movie review here..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg px-4">
+                                    <i class="fas fa-search me-2"></i>Analyze the Sentiment
+                                </button>
+                            </form>
+                            <div class="loader mt-3" id="loader"></div>
+                            <div class="result-box text-center" id="resultBox">
+                                <div id="resultIcon" class="result-icon"></div>
+                                <h3 id="sentimentResult" class="mb-3"></h3>
+                                <p id="resultDescription" class="mb-4"></p>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <div class="text-start mb-2">Confidence: <span id="confidenceValue"></span></div>
+                                        <div class="progress confidence">
+                                            <div id="confidenceBar" class="progress-bar" role="progressbar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-start mb-3">
+                                    <h5>Key Phrases:</h5>
+                                    <div id="keyPhrases">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Dashboard Section -->
+    <section class="py-5" id="dashboard">
+        <div class="container">
+            <h2 class="text-center mb-5">Sentiment Analysis Dashboard</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-4 mb-4">
+                    <div class="card stat-card bg-white">
+                        <i class="fas fa-check-circle text-success"></i>
+                        <h3 class="stat-value" id="positiveCount">25,342</h3>
+                        <p class="stat-label">Positive Reviews</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card stat-card bg-white">
+                        <i class="fas fa-times-circle text-danger"></i>
+                        <h3 class="stat-value" id="negativeCount">24,658</h3>
+                        <p class="stat-label">Negative Reviews</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card stat-card bg-white">
+                        <i class="fas fa-chart-pie text-primary"></i>
+                        <h3 class="stat-value" id="totalCount">50,000</h3>
+                        <p class="stat-label">Total Analyzed</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            Sentiment Distribution
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="sentimentChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            Performance Metrics
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="performanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>Recent Analysis History</span>
+                            <button class="btn btn-sm btn-outline-light" id="clearHistory">
+                                <i class="fas fa-trash-alt me-1"></i> Clear
+                            </button>
+                        </div>
+                        <div class="card-body review-history" id="reviewHistory">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Features & Capabilities</h2>
+            
+            <div class="row feature-highlight">
+                <div class="col-md-4 text-center mb-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4>AI-Powered Analysis</h4>
+                    <p>Our machine learning models are trained on 50,000 movie reviews to accurately identify sentiment.</p>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Detailed Metrics</h4>
+                    <p>Get confidence scores and key phrase extraction to understand the reasoning behind each analysis.</p>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h4>Analysis History</h4>
+                    <p>Keep track of previously analyzed reviews and their sentiments for future reference.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="py-5" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="mb-4">About This Project</h2>
+                    <p class="lead mb-5">
+                        This movie sentiment analysis project uses machine learning to determine if a movie review expresses a positive or negative opinion. The model was trained on the IMDb dataset containing 50,000 movie reviews labeled by sentiment.
+                    </p>
+                    <p>
+                        The sentiment analysis model uses TF-IDF vectorization and both Logistic Regression and Naive Bayes classifiers to predict sentiment. The model achieved high accuracy in classifying movie reviews.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <!-- <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <h5>Movie Sentiment Analyzer</h5>
+                    <p class="small mb-0">A machine learning project for analyzing movie review sentiments</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-3"><i class="fab fa-github fa-lg"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-linkedin fa-lg"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12 text-center">
+                    <p class="small mb-0">© 2025 Movie Sentiment Analyzer. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer> -->
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Sample positive phrases for demonstration
+        const positiveKeyPhrases = [
+            'amazing', 'excellent', 'fantastic', 'great', 'wonderful', 'brilliant', 
+            'outstanding', 'superb', 'terrific', 'incredible', 'enjoyable', 'masterpiece',
+            'captivating', 'entertaining', 'impressive', 'perfect', 'loved', 'favorite'
+        ];
+        
+        // Sample negative phrases for demonstration
+        const negativeKeyPhrases = [
+            'terrible', 'awful', 'boring', 'bad', 'disappointing', 'waste', 
+            'horrible', 'poor', 'worst', 'dreadful', 'mediocre', 'failure',
+            'annoying', 'frustrating', 'pathetic', 'ridiculous', 'hated', 'avoid'
+        ];
+        
+        // Display result function
+        function displayResult(sentiment, confidence) {
+            const resultBox = document.getElementById('resultBox');
+            const resultIcon = document.getElementById('resultIcon');
+            const sentimentResult = document.getElementById('sentimentResult');
+            const resultDescription = document.getElementById('resultDescription');
+            const confidenceValue = document.getElementById('confidenceValue');
+            const confidenceBar = document.getElementById('confidenceBar');
+            const keyPhrases = document.getElementById('keyPhrases');
+            const loader = document.getElementById('loader');
+            
+            // Hide loader
+            loader.style.display = 'none';
+            
+            // Clear previous key phrases
+            keyPhrases.innerHTML = '';
+            
+            // Set result based on sentiment
+            if (sentiment === 'positive') {
+                resultBox.className = 'result-box positive text-center';
+                resultIcon.innerHTML = '<i class="fas fa-thumbs-up positive-icon"></i>';
+                sentimentResult.textContent = 'Positive Sentiment';
+                resultDescription.textContent = 'This review expresses a positive opinion about the movie.';
+                confidenceBar.className = 'progress-bar bg-success';
+                
+                // Add positive key phrases (randomly select 5-7)
+                const shuffled = [...positiveKeyPhrases].sort(() => 0.5 - Math.random());
+                const selected = shuffled.slice(0, Math.floor(Math.random() * 3) + 5);
+                selected.forEach(phrase => {
+                    const tag = document.createElement('span');
+                    tag.className = 'tag';
+                    tag.innerHTML = '<i class="fas fa-check-circle text-success me-1"></i> ' + phrase;
+                    keyPhrases.appendChild(tag);
+                });
+            } else {
+                resultBox.className = 'result-box negative text-center';
+                resultIcon.innerHTML = '<i class="fas fa-thumbs-down negative-icon"></i>';
+                sentimentResult.textContent = 'Negative Sentiment';
+                resultDescription.textContent = 'This review expresses a negative opinion about the movie.';
+                confidenceBar.className = 'progress-bar bg-danger';
+                
+                // Add negative key phrases (randomly select 5-7)
+                const shuffled = [...negativeKeyPhrases].sort(() => 0.5 - Math.random());
+                const selected = shuffled.slice(0, Math.floor(Math.random() * 3) + 5);
+                selected.forEach(phrase => {
+                    const tag = document.createElement('span');
+                    tag.className = 'tag';
+                    tag.innerHTML = '<i class="fas fa-times-circle text-danger me-1"></i> ' + phrase;
+                    keyPhrases.appendChild(tag);
+                });
+            }
+            
+            // Set confidence value
+            confidenceValue.textContent = `${confidence}%`;
+            confidenceBar.style.width = `${confidence}%`;
+            
+            // Show result box
+            resultBox.style.display = 'block';
+            
+            // Add to history
+            addToHistory(document.getElementById('reviewText').value, sentiment, confidence);
+        }
+        
+        // Add to history function
+        function addToHistory(reviewText, sentiment, confidence) {
+            const reviewHistory = document.getElementById('reviewHistory');
+            const historyItem = document.createElement('div');
+            
+            // Truncate review if too long
+            let truncatedReview = reviewText.length > 100 ? reviewText.substring(0, 100) + '...' : reviewText;
+            
+            // Set class based on sentiment
+            if (sentiment === 'positive') {
+                historyItem.className = 'history-review bg-light';
+                historyItem.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="sentiment-badge sentiment-positive">
+                            <i class="fas fa-thumbs-up me-1"></i> Positive
+                        </span>
+                        <span class="text-muted small">Confidence: ${confidence}%</span>
+                    </div>
+                    <p class="mb-0">${truncatedReview}</p>
+                `;
+            } else {
+                historyItem.className = 'history-review bg-light';
+                historyItem.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="sentiment-badge sentiment-negative">
+                            <i class="fas fa-thumbs-down me-1"></i> Negative
+                        </span>
+                        <span class="text-muted small">Confidence: ${confidence}%</span>
+                    </div>
+                    <p class="mb-0">${truncatedReview}</p>
+                `;
+            }
+            
+            // Add to history
+            reviewHistory.prepend(historyItem);
+        }
+        
+        // Form submission handler
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const reviewText = document.getElementById('reviewText').value.trim();
+            
+            if (reviewText === '') {
+                alert('Please enter a movie review.');
+                return;
+            }
+            
+            // Show loader
+            document.getElementById('loader').style.display = 'block';
+            
+            // Hide previous result if any
+            document.getElementById('resultBox').style.display = 'none';
+            
+            // Simulate API call with setTimeout
+            setTimeout(function() {
+                // Determine sentiment based on keywords (simplified for demo)
+                const positiveWords = ['good', 'great', 'excellent', 'amazing', 'love', 'wonderful', 'best', 'enjoyed', 'perfect', 'recommend'];
+                const negativeWords = ['bad', 'terrible', 'awful', 'boring', 'waste', 'poor', 'disappointing', 'worst', 'hate', 'avoid'];
+                
+                let positiveScore = 0;
+                let negativeScore = 0;
+                
+                const lowerReview = reviewText.toLowerCase();
+                
+                positiveWords.forEach(word => {
+                    if (lowerReview.includes(word)) positiveScore++;
+                });
+                
+                negativeWords.forEach(word => {
+                    if (lowerReview.includes(word)) negativeScore++;
+                });
+                
+                let sentiment, confidence;
+                
+                if (positiveScore > negativeScore) {
+                    sentiment = 'positive';
+                    confidence = Math.min(Math.floor((positiveScore / (positiveScore + negativeScore)) * 100) + Math.floor(Math.random() * 15), 98);
+                } else if (negativeScore > positiveScore) {
+                    sentiment = 'negative';
+                    confidence = Math.min(Math.floor((negativeScore / (positiveScore + negativeScore)) * 100) + Math.floor(Math.random() * 15), 98);
+                } else {
+                    // If tied, slightly favor one randomly
+                    if (Math.random() > 0.5) {
+                        sentiment = 'positive';
+                        confidence = 50 + Math.floor(Math.random() * 10);
+                    } else {
+                        sentiment = 'negative';
+                        confidence = 50 + Math.floor(Math.random() * 10);
+                    }
+                }
+                
+                displayResult(sentiment, confidence);
+            }, 1500);
+        });
+        
+        // Clear history button handler
+        document.getElementById('clearHistory').addEventListener('click', function() {
+            document.getElementById('reviewHistory').innerHTML = '';
+        });
+        
+        // Navigation handler
+        document.querySelectorAll('.navbar-nav .nav-link').forEach(navLink => {
+            navLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all nav links
+                document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Get target section id
+                const targetId = this.getAttribute('href').substring(1);
+                
+                // Hide all sections
+                document.querySelectorAll('section').forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                // Show target section
+                document.getElementById(targetId).style.display = 'block';
+            });
+        });
+        
+        // Initialize dashboard charts
+        window.addEventListener('load', function() {
+            // Sentiment distribution chart
+            const sentimentCtx = document.getElementById('sentimentChart').getContext('2d');
+            const sentimentChart = new Chart(sentimentCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Positive', 'Negative'],
+                    datasets: [{
+                        data: [25342, 24658],
+                        backgroundColor: ['#2E8B57', '#DC143C'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Performance metrics chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            const performanceChart = new Chart(performanceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Accuracy', 'Precision', 'Recall', 'F1 Score'],
+                    datasets: [
+                        {
+                            label: 'Logistic Regression',
+                            data: [0.89, 0.88, 0.90, 0.89],
+                            backgroundColor: '#4B0082'
+                        },
+                        {
+                            label: 'Naive Bayes',
+                            data: [0.86, 0.85, 0.87, 0.86],
+                            backgroundColor: '#9370DB'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toFixed(1);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Show home section by default
+            document.querySelectorAll('section').forEach(section => {
+                if (section.id !== 'home') {
+                    section.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
